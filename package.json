@@ -1,0 +1,25 @@
+{
+  "name": "e-chat",
+  "version": "1.0.0",
+  "description": "Um chat simples com servidor NodeJS intergrado com Webscoket utilizando Socket.io",
+  "main": "./server/src/index.ts",
+  "type": "module",
+  "scripts": {
+    "init-server": "node --no-warnings --loader ts-node/esm server/src/index.ts",
+    "build-client": "npx tsc --project client/tsconfig.json && copyfiles -u 1 client/src/app/**/*.html client/src/app/**/*.css client/build/",
+    "start": "npm run \"build-client\" && npm run \"init-server\""
+  },
+  "keywords": [],
+  "author": "MrNaceja",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.17",
+    "copyfiles": "^2.4.1",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ts-node": "^10.9.2"
+  }
+}
