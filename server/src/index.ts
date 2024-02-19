@@ -2,6 +2,7 @@
 import express from "express";
 import { createServer } from "node:http";
 import path from "node:path";
+import initSocketIo from "./socket/index.ts";
 
 const app = express();
 const httpServer = createServer(app);
@@ -19,4 +20,5 @@ app.get('/', (req, res) => {
 const PORT = 3000
 httpServer.listen(PORT, () => {
    console.log(`Servidor rodando 🚀 - http://localhost:${PORT}`)
+   initSocketIo(httpServer)
 });

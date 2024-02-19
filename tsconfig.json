@@ -3,11 +3,12 @@
     "target": "ES2022",
     "module": "Node16",
     "baseUrl": ".",
-    "rootDir": "."
+    "rootDir": ".",
+    "allowImportingTsExtensions": true,
+    "noEmit":true
   },
   "include": [
     "client/src/**/*", 
-    "server/src/**/*", 
-    "utils/**/*"
+    "server/src/**/*"
   ]
 }
