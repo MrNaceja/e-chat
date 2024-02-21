@@ -1,40 +1,51 @@
 import initSocketIo from "../socket/index.js"
-import { TSocketIo } from "../types/socket-io.js"
+import { IMessage } from "../types/chat.js"
+import { TInstanceSocketIo } from "../types/socket-io.js"
 
 export default class EChat extends HTMLElement {
 
-    #Container : HTMLDivElement
-    #socketIo : TSocketIo
+    #socketIo : TInstanceSocketIo
 
     constructor () {
         super()
-        this.mount()
+        this.#mount()
     }
 
-    mount() {
-        this.#socketIo = initSocketIo()
+    #mount() {
+        this.#configureSocket()
         this.attachShadow({ mode: 'open' })
-        this.mountContainer()
-        this.mountMessagesArea()
-        this.mountInputArea()
-        this.mountStyles()
+        this.#mountContainer()
+        this.#mountMessagesArea()
+        this.#mountInputArea()
+        this.#mountStyles()
     }
 
-    appendContainer(...childs : Node[]) {
-        if (!this.#Container) this.mountContainer()
-        this.#Container.classList.add('container')
-        this.#Container.append(...childs)
-        return this
+    #configureSocket() {
+        this.#socketIo = initSocketIo()
+        this.#socketIo.on('serverMessage', message => {
+            this.#appendMessage({
+                content: message,
+                from: 'server'
+            })
+        })
     }
 
-    mountContainer() {
-        if (this.#Container) return
-        this.#Container = document.createElement('div')
-        this.#Container.classList.add('container')
-        this.shadowRoot.appendChild(this.#Container)
+    #appendMessage(message : IMessage) {
+        const container = document.createElement('h3')
+        container.classList.add('messages', `${message.from}-messages`)
+        container.innerText = message.content
+
+        this.#getMessagesArea().appendChild(container)
     }
 
-    mountInputArea() {
+    #mountContainer() {
+        if (this.#getContainer()) return
+        const container = document.createElement('div')
+        container.classList.add('container')
+        this.shadowRoot.appendChild(container)
+    }
+
+    #mountInputArea() {
         const container = document.createElement('div')
         const input = document.createElement('input')
         const sendBtn = document.createElement('button')
@@ -42,41 +53,63 @@ export default class EChat extends HTMLElement {
         input.addEventListener('keydown', e => {
             if (e.key == 'Enter') {
                 e.preventDefault()
-                this.sendMessage()
+                this.#sendMessage()
             }
         })
-        sendBtn.addEventListener('click', () => this.sendMessage())
-        sendBtn.innerText = 'Enviar';
+        sendBtn.addEventListener('click', () => this.#sendMessage())
+        sendBtn.innerText = '→';
         input.placeholder = 'Digite aqui...'
+        sendBtn.type = 'button'
         container.classList.add('input-area')
         container.append(input, sendBtn)
-        this.appendContainer(container)
+        this.#getContainer().appendChild(container)
     }
 
-    mountMessagesArea() {
+    #mountMessagesArea() {
         const container = document.createElement('div')
         const message = document.createElement('span')
 
-
         container.classList.add('messages-area')
         container.appendChild(message)
-        this.appendContainer(container)
+        this.#getContainer().appendChild(container)
     }
 
-    mountStyles() {
+    #mountStyles() {
         const linkEstilos = document.createElement('link')
         linkEstilos.href = '/src/app/e-chat/styles.css'
         linkEstilos.rel = 'stylesheet'
         this.shadowRoot.appendChild(linkEstilos)
     }
 
-    sendMessage() {
-        const input : HTMLButtonElement = this.#Container.querySelector('.input-area > input')
+    #sendMessage() {
+        const input = this.#getInputArea().querySelector('input')
         const message = input.value
+        if (message) {
+            this.sendClientMessage(message)
+            input.value = ''
+        }
+       
+    }
 
+    sendClientMessage(message : string) {
         this.#socketIo.emit('clientMessage', message)
+        this.#appendMessage({
+            content: message,
+            from: 'client'
+        })
+    }
 
-        input.value = ''
+    #getContainer() : HTMLDivElement {
+        return this.shadowRoot.querySelector('.container')
+    }
+
+    #getMessagesArea() : HTMLDivElement {
+        return this.#getContainer().querySelector('.messages-area')
+    }
+
+    #getInputArea() : HTMLDivElement {
+        return this.#getContainer().querySelector('.input-area')
     }
 }
+
 customElements.define('e-chat', EChat)

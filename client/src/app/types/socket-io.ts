@@ -1,4 +1,4 @@
-import { Socket } from 'socket.io-client';
+import { ManagerOptions, Socket, SocketOptions } from 'socket.io-client';
 
 export interface ServerEvents {
     serverMessage: (message : string) => void
@@ -11,10 +11,10 @@ export interface ClientEvents {
 export interface InterEvents {
     ping: () => void;
 }
-  
-export interface SocketData {
-    name: string;
-    age: number;
+
+export interface SocketAuth {
+    userName: string
 }
 
-export type TSocketIo = Socket<ServerEvents, ClientEvents>
+export type TInstanceSocketIo = Socket<ServerEvents, ClientEvents>
+export type TSocketIo = (opts?: Partial<ManagerOptions & SocketOptions>) => TInstanceSocketIo
