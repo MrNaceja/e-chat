@@ -1,9 +1,10 @@
-import initSocketIo from "@/app/socket/index"
+
+import initSocketIo from "@/app/socket/index.js"
 import { IMessage } from "@/types/chat"
-import { TInstanceSocketIo } from "@/types/socket-io"
+import { TInstanceSocketIo } from "@/types/socket"
 
 /**
- * WebComponent de Chat interliado com Socket.io.
+ * WebComponent de Chat interligado com Socket.io.
  */
 export default class EChat extends HTMLElement {
 
@@ -62,6 +63,7 @@ export default class EChat extends HTMLElement {
         sendBtn.innerText = '→';
         input.placeholder = 'Digite aqui...'
         sendBtn.type = 'button'
+        sendBtn.title = 'Enviar'
         container.classList.add('input-area')
         container.append(input, sendBtn)
         this.#getContainer().appendChild(container)

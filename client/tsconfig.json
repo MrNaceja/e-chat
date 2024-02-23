@@ -3,12 +3,12 @@
     "target": "es6",
     "module": "esnext",
     "moduleResolution": "node",
-    "rootDir": ".",
-    "baseUrl": ".",
+    "rootDir": "./",
+    "baseUrl": "./",
+    "esModuleInterop": true,
     "outDir": "./build",
-    "typeRoots": ["client/src/app/types/client-io.d.ts"],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"]
     },
   },
   "include": ["src/**/*"]

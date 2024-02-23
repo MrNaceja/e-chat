@@ -1,14 +1,11 @@
-// @ts-ignore
-import { io } from "https://cdn.socket.io/4.7.4/socket.io.esm.min.js";
-import { TSocketIo, TInstanceSocketIo } from "@/types/socket-io";
+import { io as ClientIO } from "https://cdn.socket.io/4.7.4/socket.io.esm.min.js";
+import { TInstanceSocketIo } from "@/types/socket";
  
-const ClientIo : TSocketIo = io
-
 /**
  * Inicializa o Socket.io no lado Client.
  */
 export default function initSocketIo() : TInstanceSocketIo {
-   const socket = ClientIo({
+   const socket = ClientIO({
       auth: {
         userName: 'Naceja'
       }
