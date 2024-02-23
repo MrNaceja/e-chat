@@ -1,7 +1,10 @@
-import initSocketIo from "../socket/index.js"
-import { IMessage } from "../types/chat.js"
-import { TInstanceSocketIo } from "../types/socket-io.js"
+import initSocketIo from "@/app/socket/index"
+import { IMessage } from "@/types/chat"
+import { TInstanceSocketIo } from "@/types/socket-io"
 
+/**
+ * WebComponent de Chat interliado com Socket.io.
+ */
 export default class EChat extends HTMLElement {
 
     #socketIo : TInstanceSocketIo
@@ -12,8 +15,8 @@ export default class EChat extends HTMLElement {
     }
 
     #mount() {
-        this.#configureSocket()
         this.attachShadow({ mode: 'open' })
+        this.#configureSocket()
         this.#mountContainer()
         this.#mountMessagesArea()
         this.#mountInputArea()
@@ -39,7 +42,6 @@ export default class EChat extends HTMLElement {
     }
 
     #mountContainer() {
-        if (this.#getContainer()) return
         const container = document.createElement('div')
         container.classList.add('container')
         this.shadowRoot.appendChild(container)
@@ -67,10 +69,7 @@ export default class EChat extends HTMLElement {
 
     #mountMessagesArea() {
         const container = document.createElement('div')
-        const message = document.createElement('span')
-
         container.classList.add('messages-area')
-        container.appendChild(message)
         this.#getContainer().appendChild(container)
     }
 

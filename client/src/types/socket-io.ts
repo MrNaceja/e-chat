@@ -17,4 +17,4 @@ export interface SocketAuth {
 }
 
 export type TInstanceSocketIo = Socket<ServerEvents, ClientEvents>
-export type TSocketIo = (opts?: Partial<ManagerOptions & SocketOptions>) => TInstanceSocketIo
+export type TSocketIo = (opts?: Partial<ManagerOptions & Omit<SocketOptions, 'auth'> & { auth: SocketAuth}>) => TInstanceSocketIo
