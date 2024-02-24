@@ -14,3 +14,12 @@
 > Typescript  
 > CSS + HTML  
 > Socket.io
+
+#### Como executar:
+
+1. Clonar o repositório;
+2. No terminar, instalar as depencias com o comando <code>npm install</code>
+3. Para gerar a build do client e subir o servidor basta rodar o comando <code>npm run start</code>
+
+    Projeto rodando 🚀
+

@@ -5,7 +5,6 @@
     "moduleResolution": "node",
     "rootDir": "./",
     "baseUrl": "./",
-    "esModuleInterop": true,
     "outDir": "./build",
     "paths": {
       "@/*": ["src/*"]

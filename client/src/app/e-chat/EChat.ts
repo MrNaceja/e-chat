@@ -29,17 +29,33 @@ export default class EChat extends HTMLElement {
         this.#socketIo.on('serverMessage', message => {
             this.#appendMessage({
                 content: message,
-                from: 'server'
+                from: 'server',
+                moment: new Date()
             })
         })
     }
 
     #appendMessage(message : IMessage) {
-        const container = document.createElement('h3')
-        container.classList.add('messages', `${message.from}-messages`)
-        container.innerText = message.content
+        const container = document.createElement('span')
+        const contentMessage = document.createElement('p')
+        const date = document.createElement('sub')
+        const sender = document.createElement('sup')
 
+        date.innerText = message.moment.toLocaleString('pt', {
+            day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+        })
+        sender.innerText = message.from + ':'
+        contentMessage.innerText = message.content
+
+        container.classList.add('messages', `${message.from}-messages`)
+
+        container.append(sender, contentMessage, date)
         this.#getMessagesArea().appendChild(container)
+
+        this.#getMessagesArea().scrollTo({
+            behavior: 'smooth',
+            top: this.#getMessagesArea().scrollHeight + container.clientHeight
+        })
     }
 
     #mountContainer() {
@@ -96,7 +112,8 @@ export default class EChat extends HTMLElement {
         this.#socketIo.emit('clientMessage', message)
         this.#appendMessage({
             content: message,
-            from: 'client'
+            from: 'client',
+            moment: new Date()
         })
     }
 

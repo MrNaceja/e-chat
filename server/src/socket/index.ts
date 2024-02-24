@@ -34,5 +34,5 @@ export default function initSocketIo (server : IServer) {
  */
 const sendMessage = (socket: TSocketIo, message: string) => {
     // Com delay para simular processamento...
-    setTimeout(() => socket.emit('serverMessage', message), 2000)
+    setTimeout(() => socket.emit('serverMessage', message), 2500)
 }
